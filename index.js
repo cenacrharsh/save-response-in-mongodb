@@ -1,11 +1,15 @@
 const express = require("express");
-const response = require("./response.json");
 const dotenv = require("dotenv").config();
+const fs = require("fs");
+
+//# Product JSON
+const arrayOfProductJsons = require("./categoryResponse/index.js");
 
 //# Database
 const db = require("./database/index");
 const responseModel = require("./database/models/response");
 const productModel = require("./database/models/product");
+const genericProductModel = require("./database/models/genericProduct");
 db.init();
 
 const PORT = 8000;
@@ -59,6 +63,56 @@ app.get("/product", (req, res) => {
         data: data,
       });
     }
+  });
+});
+
+app.get("/generic-product", async (req, res) => {
+  let arrayOfResponseObject = [];
+
+  console.log(arrayOfProductJsons.length);
+
+  console.log("start");
+
+  for (let i = 0; i < arrayOfProductJsons.length; i++) {
+    let currentProductDetails = arrayOfProductJsons[i].product;
+
+    let responseObj = {
+      asin: currentProductDetails?.asin,
+      productTitle: currentProductDetails?.title,
+      keywords: currentProductDetails?.keywords,
+      link: currentProductDetails?.link,
+      brand: currentProductDetails?.brand,
+      description: currentProductDetails?.description,
+      categories: currentProductDetails?.categories,
+      variants: currentProductDetails?.variants,
+      attributes: currentProductDetails?.attributes,
+      specifications: currentProductDetails?.specifications,
+      categoriesFlat: currentProductDetails?.categories_flat,
+      images: currentProductDetails?.images,
+    };
+
+    arrayOfResponseObject.push(responseObj);
+  }
+
+  console.log("end");
+
+  genericProductModel.insertMany(arrayOfResponseObject, (error, data) => {
+    console.log("Array Of MongoDB Documents: ", data);
+
+    console.log("Length of Array Of MongoDB Documents: ", data.length);
+
+    fs.writeFile("mongoDBresponse.json", JSON.stringify(data), (err) => {
+      if (err) {
+        throw err;
+      }
+
+      console.log("Array Of MongoDB Documents Is Saved In File");
+    });
+
+    res.status(200).send({
+      message: "Products Saved In MongoDB Successfully",
+      mongoDB_docements: data,
+    });
   });
 });
 
