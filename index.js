@@ -1,5 +1,4 @@
 const express = require("express");
-const phoneResponse = require("./phoneResponse/phone");
 const dotenv = require("dotenv").config();
 
 //# Database
@@ -7,59 +6,76 @@ const db = require("./database/index");
 const productModel = require("./database/models/product");
 db.init();
 
+//Responses in JSON
+const products = require("./categoryResponse");
+
 const PORT = 8000;
 
 const app = express();
 
+const differentProducts = [products.bottle, products.guitar, products.memoryCard, products.samsungPhone, products.trimmer, products.tshirt]
+
 
 app.get("/", (req, res) => {
-  let responseObj = {
-    asin: response.product.asin,
-    complete_response: response,
-  };
-
-  responseModel.create(responseObj, (err, data) => {
-    if (err) {
-      res.json({
-        message: "Duplicate ASIN",
-        error: err,
-      });
-      console.log("Error occurred while saving data in DB");
-    } else {
-      console.log("Complete JSON Response Saved In MongoDB Successfully !!!");
-      res.status(200).json({
-        message: "Complete JSON Response Saved In MongoDB Successfully !!!",
-        data: data,
-      });
-    }
-  });
+  res.send("Save Product Details in MongoDB")
 });
 
 
-app.get("/phone", (req, res) => {
-  let myProduct = phoneResponse.google
-    let memoryObj = {
-        asin: myProduct.asin,
-        productTitle:  myProduct.title,
-        keywords: myProduct.keywords_list,
-        link: myProduct.link,
-        brand: myProduct.brand,
-        categories: myProduct.categories,
-        categoriesFlat: myProduct.categories_flat,
-        images: myProduct.images
-    }
 
-    productModel.create(memoryObj,(err,data)=>{
-        if(err){
-            res.json({error:err,message:"Duplicate ASIN"})
-            console.log("Error occurred",err)
-        }
-        else{
-            res.json({data:memoryObj,message:"Data Saved In MongoDB Successfully !!!"})
-            console.log("Data saved successfully")
-        }
+app.get("/save", (req, res) => {
+
+  let arrayOfProductObj = []
+
+  differentProducts.forEach((p) => {
+    let productInfo = p.product
+    let productObj = {
+      asin: productInfo.asin,
+      productTitle: productInfo.title,
+      keywords: productInfo.keywords_list,
+      link: productInfo.link,
+      brand: productInfo.brand,
+      description: productInfo?.description,
+      categories: productInfo.categories,
+      variants: productInfo?.variants,
+      attributes: productInfo?.attributes,
+      specifications: productInfo.specifications,
+      categoriesFlat: productInfo.categories_flat,
+      images: productInfo.images
+    }
+    arrayOfProductObj.push(productObj)
+  })
+
+
+  arrayOfProductObj.forEach((pobj) => {
+    productModel.create(pobj, (err, data) => {
+      if (err) {
+        console.log("Error occurred", err)
+      }
+      else {
+        console.log("Data saved successfully")
+      }
     })
+  })
+
+  console.log("counting...")
+  res.send(arrayOfProductObj)
+
 });
+
+
+
+app.get("/delete", (req, res) => {
+  productModel.deleteMany({}, (err) => {
+    if (err) {
+      console.log(err)
+    }
+  })
+
+  res.send("Product Deleted")
+
+})
+
+
 
 //! Starting Server
 app.listen(PORT, function () {
