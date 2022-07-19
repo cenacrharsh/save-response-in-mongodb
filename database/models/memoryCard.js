@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const productsSchema = new mongoose.Schema(
+const memorycardSchema = new mongoose.Schema(
   {
     asin: {
       type: String,
@@ -23,21 +23,9 @@ const productsSchema = new mongoose.Schema(
         type:String,
         required:true
     },
-    description:{
-        type:String,
-    },
     categories:{
         type:[Object],
         required:true
-    },
-    variants:{
-        type:[Object],
-    },
-    attributes:{
-        type:[Object],
-    },
-    specifications:{
-        type:[Object],
     },
     categoriesFlat:{
         type:String,
@@ -53,6 +41,6 @@ const productsSchema = new mongoose.Schema(
   }
 );
 
-const productsModel = mongoose.model("products", productsSchema);
+const memorycardModel = mongoose.model("memorycard", memorycardSchema);
 
-module.exports = productsModel;
+module.exports = memorycardModel;
