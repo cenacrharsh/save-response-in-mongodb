@@ -1,10 +1,9 @@
 const express = require("express");
-const response = require("./response.json");
+const phoneResponse = require("./phoneResponse/phone");
 const dotenv = require("dotenv").config();
 
 //# Database
 const db = require("./database/index");
-const responseModel = require("./database/models/response");
 const productModel = require("./database/models/product");
 db.init();
 
@@ -12,11 +11,8 @@ const PORT = 8000;
 
 const app = express();
 
-app.get("/", (req, res) => {
-  res.send("<h1>Hello World!!!</h1>");
-});
 
-app.get("/response", (req, res) => {
+app.get("/", (req, res) => {
   let responseObj = {
     asin: response.product.asin,
     complete_response: response,
@@ -39,27 +35,30 @@ app.get("/response", (req, res) => {
   });
 });
 
-app.get("/product", (req, res) => {
-  let responseObj = {
-    asin: response.product.asin,
-    product_details: response.product,
-  };
 
-  productModel.create(responseObj, (err, data) => {
-    if (err) {
-      res.json({
-        message: "Error Occurred while saving data in DB",
-        error: err,
-      });
-      console.log("Error occurred while saving data in DB", err);
-    } else {
-      console.log("Product JSON Response Saved In MongoDB Successfully !!!");
-      res.status(200).json({
-        message: "Product JSON Response Saved In MongoDB Successfully !!!",
-        data: data,
-      });
+app.get("/phone", (req, res) => {
+  let myProduct = phoneResponse.google
+    let memoryObj = {
+        asin: myProduct.asin,
+        productTitle:  myProduct.title,
+        keywords: myProduct.keywords_list,
+        link: myProduct.link,
+        brand: myProduct.brand,
+        categories: myProduct.categories,
+        categoriesFlat: myProduct.categories_flat,
+        images: myProduct.images
     }
-  });
+
+    productModel.create(memoryObj,(err,data)=>{
+        if(err){
+            res.json({error:err,message:"Duplicate ASIN"})
+            console.log("Error occurred",err)
+        }
+        else{
+            res.json({data:memoryObj,message:"Data Saved In MongoDB Successfully !!!"})
+            console.log("Data saved successfully")
+        }
+    })
 });
 
 //! Starting Server
