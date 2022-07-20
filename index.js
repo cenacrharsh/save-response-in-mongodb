@@ -69,10 +69,6 @@ app.get("/product", (req, res) => {
 app.get("/generic-product", async (req, res) => {
   let arrayOfResponseObject = [];
 
-  console.log(arrayOfProductJsons.length);
-
-  console.log("start");
-
   for (let i = 0; i < arrayOfProductJsons.length; i++) {
     let currentProductDetails = arrayOfProductJsons[i].product;
 
@@ -94,12 +90,10 @@ app.get("/generic-product", async (req, res) => {
     arrayOfResponseObject.push(responseObj);
   }
 
-  console.log("end");
-
   genericProductModel.insertMany(arrayOfResponseObject, (error, data) => {
-    console.log("Array Of MongoDB Documents: ", data);
+    // console.log("Array Of MongoDB Documents: ", data);
 
-    console.log("Length of Array Of MongoDB Documents: ", data.length);
+    // console.log("Length of Array Of MongoDB Documents: ", data.length);
 
     fs.writeFile("mongoDBresponse.json", JSON.stringify(data), (err) => {
       if (err) {
