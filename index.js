@@ -73,18 +73,18 @@ app.get("/generic-product", async (req, res) => {
     let currentProductDetails = arrayOfProductJsons[i].product;
 
     let responseObj = {
-      asin: currentProductDetails?.asin,
-      productTitle: currentProductDetails?.title,
-      keywords: currentProductDetails?.keywords,
-      link: currentProductDetails?.link,
-      brand: currentProductDetails?.brand,
-      description: currentProductDetails?.description,
-      categories: currentProductDetails?.categories,
+      asin: currentProductDetails.asin,
+      productTitle: currentProductDetails.title,
+      keywords: currentProductDetails.keywords,
+      link: currentProductDetails.link,
+      brand: currentProductDetails.brand,
+      description: currentProductDetails.description,
+      categories: currentProductDetails.categories,
       variants: currentProductDetails?.variants,
       attributes: currentProductDetails?.attributes,
       specifications: currentProductDetails?.specifications,
-      categoriesFlat: currentProductDetails?.categories_flat,
-      images: currentProductDetails?.images,
+      categoriesFlat: currentProductDetails.categories_flat,
+      images: currentProductDetails.images,
     };
 
     arrayOfResponseObject.push(responseObj);
