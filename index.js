@@ -3,7 +3,8 @@ const dotenv = require("dotenv").config();
 const fs = require("fs");
 
 //# Product JSON
-const arrayOfProductJsons = require("./categoryResponse/index.js");
+// const arrayOfProductJsons = require("./categoryResponse/index.js");
+const arrayOfProductJsons = require("./amazon_in_scrape/index.js");
 
 //# Database
 const db = require("./database/index");
