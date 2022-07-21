@@ -52,7 +52,7 @@
 
 | Sno. | Title | ASIN | Link | Remarks 
 | ------ | ------- | --------- | --------- | --------
-| 1 | Romanstii Women Casual V-Neck T-Shirts | B08XZBFX6B | https://www.amazon.com/dp/B08XZBFX6B 
+| 1 | Romanstii Women Casual V-Neck T-Shirts | B08XZBFX6B | https://www.amazon.com/dp/B08XZBFX6B | Attributes is not available
 | 2 | Amazon Essentials Mens | B07YDYK15Q  |  https://www.amazon.com/dp/B07YDYK15Q | To Buy Select Size first
 | 3 | Champion T-Shirt, Classic | B07T2RMRM4  |  https://www.amazon.com/dp/B07T2RMRM4 |To Buy Select Size first 
 | 4 | Jescakoo Summer Tops for Women | B08V5PL7V9 | https://www.amazon.com/dp/B08V5PL7V9 |To Buy Select Size first
