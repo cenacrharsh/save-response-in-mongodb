@@ -2,12 +2,16 @@ const mongoose = require("mongoose");
 
 const genericProductSchema = new mongoose.Schema(
   {
+    marketplace: {
+      type: String,
+      required: true,
+    },
     asin: {
       type: String,
       required: true,
       unique: false,
     },
-    productTitle: {
+    title: {
       type: String,
       required: true,
     },
@@ -19,16 +23,20 @@ const genericProductSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    brand: {
-      type: String,
+    feature_bullets: {
+      type: [String],
       required: true,
-    },
-    description: {
-      type: String,
     },
     categories: {
       type: [Object],
       required: true,
+    },
+    images: {
+      type: [Object],
+      required: true,
+    },
+    description: {
+      type: String,
     },
     variants: {
       type: [Object],
@@ -38,14 +46,6 @@ const genericProductSchema = new mongoose.Schema(
     },
     specifications: {
       type: [Object],
-    },
-    categoriesFlat: {
-      type: String,
-      required: true,
-    },
-    images: {
-      type: [Object],
-      required: true,
     },
   },
   {
