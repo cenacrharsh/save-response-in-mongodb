@@ -36,12 +36,17 @@ app.get("/save", (req, res) => {
       brand: productInfo.brand,
       description: productInfo?.description,
       categories: productInfo.categories,
-      variants: productInfo?.variants,
-      attributes: productInfo?.attributes,
+      variants: productInfo.variants ? productInfo.variants:null,
+      attributes: productInfo.attributes,
       specifications: productInfo.specifications,
       categoriesFlat: productInfo.categories_flat,
       images: productInfo.images
     }
+
+    // if(productInfo.hasOwnProperty("variants")){
+    //   productObj[variants] = productInfo.variants
+    // }
+
     arrayOfProductObj.push(productObj)
   })
 
@@ -57,7 +62,6 @@ app.get("/save", (req, res) => {
     })
   })
 
-  console.log("counting...")
   res.send(arrayOfProductObj)
 
 });

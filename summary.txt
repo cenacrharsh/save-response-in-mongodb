@@ -1,0 +1,4 @@
+With default value it still save an empty array
+Optional Chaining still not working
+Last option is use ternary operator and push null
+another method is hasOwnProperty
