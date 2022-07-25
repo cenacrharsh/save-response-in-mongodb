@@ -2,3 +2,7 @@ With default value it still save an empty array
 Optional Chaining still not working
 Last option is use ternary operator and push null
 another method is hasOwnProperty
+
+
+If key is not present and if we provide default value to array of objects it get overridden 
+but for string it keeps default value
