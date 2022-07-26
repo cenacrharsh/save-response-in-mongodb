@@ -34,18 +34,14 @@ app.get("/save", (req, res) => {
       keywords: productInfo.keywords_list,
       link: productInfo.link,
       brand: productInfo.brand,
-      description: productInfo?.description,
+      description: productInfo.description ? productInfo.description:null,
       categories: productInfo.categories,
       variants: productInfo.variants ? productInfo.variants:null,
-      attributes: productInfo.attributes,
+      attributes: productInfo.attributes ? productInfo.attributes : null,
       specifications: productInfo.specifications,
       categoriesFlat: productInfo.categories_flat,
       images: productInfo.images
     }
-
-    // if(productInfo.hasOwnProperty("variants")){
-    //   productObj[variants] = productInfo.variants
-    // }
 
     arrayOfProductObj.push(productObj)
   })
