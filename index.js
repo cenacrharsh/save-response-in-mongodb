@@ -82,9 +82,9 @@ app.get("/generic-product", async (req, res) => {
       feature_bullets: currentProductDetails.feature_bullets,
       categories: currentProductDetails.categories,
       images: currentProductDetails.images,
-      description: currentProductDetails?.description,
-      variants: currentProductDetails?.variants,
-      attributes: currentProductDetails?.attributes,
+      description: currentProductDetails.description,
+      variants: currentProductDetails.variants || [],
+      attributes: currentProductDetails.attributes,
       specifications: currentProductDetails?.specifications,
     };
 
