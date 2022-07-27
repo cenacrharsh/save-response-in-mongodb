@@ -86,10 +86,10 @@ app.get("/generic-product", async (req, res) => {
       feature_bullets: currentProductDetails.feature_bullets,
       categories: currentProductDetails.categories,
       images: currentProductDetails.images,
-      description: currentProductDetails.description,
-      variants: currentProductDetails.variants || [],
-      attributes: currentProductDetails.attributes,
-      specifications: currentProductDetails?.specifications,
+      description: currentProductDetails.description ? currentProductDetails.description:null,
+      variants: currentProductDetails.variants ? currentProductDetails.variants:null,
+      attributes: currentProductDetails.attributes ? currentProductDetails.attributes:null,
+      specifications: currentProductDetails.specifications,
     };
 
     arrayOfResponseObject.push(responseObj);
@@ -114,6 +114,15 @@ app.get("/generic-product", async (req, res) => {
     });
   });
 });
+
+app.get("/delete/generic-product",(req,res)=>{
+    genericProductModel.deleteMany({}).then(err=>{
+      if(err){
+        console.log(err)
+      }
+      res.send("Product deleted")
+    })
+})
 
 // let arrayOfProductAsins = [
 //   { asin: "B07N2F3JXP" },
