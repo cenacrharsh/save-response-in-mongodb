@@ -115,12 +115,63 @@ app.get("/generic-product", async (req, res) => {
   });
 });
 
+// let arrayOfProductAsins = [
+//   { asin: "B07N2F3JXP" },
+//   { asin: "B07K8MGPWJ" },
+//   { asin: "B073JYC4XM" },
+//   { asin: "B09MVZH5RB" },
+//   { asin: "B01K1HPA60" },
+//   { asin: "B08XZBFX6B" },
+// ];
+
+let arrayOfProductAsins = [
+  "B09NSW34G8",
+  "B017NPCSLI",
+  "B08L5FM4JC",
+  "B096VDR283",
+  "B09V7G2V62",
+  "B09DT4N454",
+];
+
 app.post("/product/map", (req, res) => {
   let inputObj = req.body;
-  res.status(200).json({
-    message: "Input Object Received Successfully",
-    input_object: inputObj,
-  });
+
+  genericProductModel.find(
+    {
+      asin: { $in: arrayOfProductAsins },
+    },
+    (err, mongodbDocuments) => {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log(mongodbDocuments.length);
+
+        let outputObj = [];
+
+        for (let i = 0; i < mongodbDocuments.length; i++) {
+          let tempObj = {
+            [inputObj.asin]: [mongodbDocuments[i].asin],
+            [inputObj.title]: [mongodbDocuments[i].title],
+            [inputObj.keywords]: [mongodbDocuments[i].keywords],
+            [inputObj.link]: [mongodbDocuments[i].link],
+            [inputObj.feature_bullets]: [mongodbDocuments[i].feature_bullets],
+            [inputObj.categories]: [mongodbDocuments[i].categories],
+            [inputObj.images]: [mongodbDocuments[i].images],
+            [inputObj.variants]: [mongodbDocuments[i].variants],
+            [inputObj.attributes]: [mongodbDocuments[i].attributes],
+            [inputObj.specifications]: [mongodbDocuments[i].specifications],
+          };
+
+          outputObj.push(tempObj);
+        }
+
+        res.status(200).json({
+          message: "Products Mapped Successfully !!!",
+          mapped_products: outputObj,
+        });
+      }
+    }
+  );
 });
 
 //! Starting Server
