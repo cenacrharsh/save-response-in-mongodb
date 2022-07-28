@@ -86,9 +86,15 @@ app.get("/generic-product", async (req, res) => {
       feature_bullets: currentProductDetails.feature_bullets,
       categories: currentProductDetails.categories,
       images: currentProductDetails.images,
-      description: currentProductDetails.description ? currentProductDetails.description:null,
-      variants: currentProductDetails.variants ? currentProductDetails.variants:null,
-      attributes: currentProductDetails.attributes ? currentProductDetails.attributes:null,
+      description: currentProductDetails.description
+        ? currentProductDetails.description
+        : null,
+      variants: currentProductDetails.variants
+        ? currentProductDetails.variants
+        : null,
+      attributes: currentProductDetails.attributes
+        ? currentProductDetails.attributes
+        : null,
       specifications: currentProductDetails.specifications,
     };
 
@@ -115,14 +121,14 @@ app.get("/generic-product", async (req, res) => {
   });
 });
 
-app.get("/delete/generic-product",(req,res)=>{
-    genericProductModel.deleteMany({}).then(err=>{
-      if(err){
-        console.log(err)
-      }
-      res.send("Product deleted")
-    })
-})
+app.get("/delete/generic-product", (req, res) => {
+  genericProductModel.deleteMany({}).then((err) => {
+    if (err) {
+      console.log(err);
+    }
+    res.send("Product deleted");
+  });
+});
 
 // let arrayOfProductAsins = [
 //   { asin: "B07N2F3JXP" },
@@ -159,16 +165,17 @@ app.post("/product/map", (req, res) => {
 
         for (let i = 0; i < mongodbDocuments.length; i++) {
           let tempObj = {
-            [inputObj.asin]: [mongodbDocuments[i].asin],
-            [inputObj.title]: [mongodbDocuments[i].title],
-            [inputObj.keywords]: [mongodbDocuments[i].keywords],
-            [inputObj.link]: [mongodbDocuments[i].link],
-            [inputObj.feature_bullets]: [mongodbDocuments[i].feature_bullets],
-            [inputObj.categories]: [mongodbDocuments[i].categories],
-            [inputObj.images]: [mongodbDocuments[i].images],
-            [inputObj.variants]: [mongodbDocuments[i].variants],
-            [inputObj.attributes]: [mongodbDocuments[i].attributes],
-            [inputObj.specifications]: [mongodbDocuments[i].specifications],
+            [inputObj.asin]: mongodbDocuments[i].asin,
+            [inputObj.title]: mongodbDocuments[i].title,
+            [inputObj.keywords]: mongodbDocuments[i].keywords,
+            [inputObj.link]: mongodbDocuments[i].link,
+            [inputObj.feature_bullets]: mongodbDocuments[i].feature_bullets,
+            [inputObj.categories]: mongodbDocuments[i].categories,
+            [inputObj.images]: mongodbDocuments[i].images,
+            [inputObj.description]: mongodbDocuments[i].description,
+            [inputObj.variants]: mongodbDocuments[i].variants,
+            [inputObj.attributes]: mongodbDocuments[i].attributes,
+            [inputObj.specifications]: mongodbDocuments[i].specifications,
           };
 
           outputObj.push(tempObj);
