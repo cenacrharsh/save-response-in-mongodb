@@ -164,19 +164,73 @@ app.post("/product/map", (req, res) => {
         let outputObj = [];
 
         for (let i = 0; i < mongodbDocuments.length; i++) {
-          let tempObj = {
-            [inputObj.asin]: mongodbDocuments[i].asin,
-            [inputObj.title]: mongodbDocuments[i].title,
-            [inputObj.keywords]: mongodbDocuments[i].keywords,
-            [inputObj.link]: mongodbDocuments[i].link,
-            [inputObj.feature_bullets]: mongodbDocuments[i].feature_bullets,
-            [inputObj.categories]: mongodbDocuments[i].categories,
-            [inputObj.images]: mongodbDocuments[i].images,
-            [inputObj.description]: mongodbDocuments[i].description,
-            [inputObj.variants]: mongodbDocuments[i].variants,
-            [inputObj.attributes]: mongodbDocuments[i].attributes,
-            [inputObj.specifications]: mongodbDocuments[i].specifications,
-          };
+          let tempObj = {};
+
+          if (inputObj.hasOwnProperty("asin")) {
+            tempObj.asin = mongodbDocuments[i].asin;
+          } else {
+            tempObj.asin = null;
+          }
+
+          if (inputObj.hasOwnProperty("title")) {
+            tempObj.title = mongodbDocuments[i].title;
+          } else {
+            tempObj.title = null;
+          }
+
+          if (inputObj.hasOwnProperty("keywords")) {
+            tempObj.keywords = mongodbDocuments[i].keywords;
+          } else {
+            tempObj.keywords = null;
+          }
+
+          if (inputObj.hasOwnProperty("link")) {
+            tempObj.link = mongodbDocuments[i].link;
+          } else {
+            tempObj.link = null;
+          }
+
+          if (inputObj.hasOwnProperty("feature_bullets")) {
+            tempObj.feature_bullets = mongodbDocuments[i].feature_bullets;
+          } else {
+            tempObj.feature_bullets = null;
+          }
+
+          if (inputObj.hasOwnProperty("categories")) {
+            tempObj.categories = mongodbDocuments[i].categories;
+          } else {
+            tempObj.categories = null;
+          }
+
+          if (inputObj.hasOwnProperty("images")) {
+            tempObj.images = mongodbDocuments[i].images;
+          } else {
+            tempObj.images = null;
+          }
+
+          if (inputObj.hasOwnProperty("description")) {
+            tempObj.description = mongodbDocuments[i].description;
+          } else {
+            tempObj.description = null;
+          }
+
+          if (inputObj.hasOwnProperty("variants")) {
+            tempObj.variants = mongodbDocuments[i].variants;
+          } else {
+            tempObj.variants = null;
+          }
+
+          if (inputObj.hasOwnProperty("attributes")) {
+            tempObj.attributes = mongodbDocuments[i].attributes;
+          } else {
+            tempObj.attributes = null;
+          }
+
+          if (inputObj.hasOwnProperty("specifications")) {
+            tempObj.specifications = mongodbDocuments[i].specifications;
+          } else {
+            tempObj.specifications = null;
+          }
 
           outputObj.push(tempObj);
         }
