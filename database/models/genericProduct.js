@@ -46,6 +46,7 @@ const genericProductSchema = new mongoose.Schema(
     },
     specifications: {
       type: [Object],
+      rquired: true,
     },
   },
   {
