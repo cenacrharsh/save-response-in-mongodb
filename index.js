@@ -11,6 +11,8 @@ const db = require("./database/index");
 const responseModel = require("./database/models/response");
 const productModel = require("./database/models/product");
 const genericProductModel = require("./database/models/genericProduct");
+const mappedProductModel = require("./database/models/mappedProduct")
+
 db.init();
 
 const PORT = 8000;
@@ -166,79 +168,160 @@ app.post("/product/map", (req, res) => {
         for (let i = 0; i < mongodbDocuments.length; i++) {
           let tempObj = {};
 
+          // if (inputObj.hasOwnProperty("asin")) {
+          //   tempObj.asin = mongodbDocuments[i].asin;
+          // } else {
+          //   tempObj.asin = null;
+          // }
+
+          // if (inputObj.hasOwnProperty("title")) {
+          //   tempObj.title = mongodbDocuments[i].title;
+          // } else {
+          //   tempObj.title = null;
+          // }
+
+          // if (inputObj.hasOwnProperty("keywords")) {
+          //   tempObj.keywords = mongodbDocuments[i].keywords;
+          // } else {
+          //   tempObj.keywords = null;
+          // }
+
+          // if (inputObj.hasOwnProperty("link")) {
+          //   tempObj.link = mongodbDocuments[i].link;
+          // } else {
+          //   tempObj.link = null;
+          // }
+
+          // if (inputObj.hasOwnProperty("feature_bullets")) {
+          //   tempObj.feature_bullets = mongodbDocuments[i].feature_bullets;
+          // } else {
+          //   tempObj.feature_bullets = null;
+          // }
+
+          // if (inputObj.hasOwnProperty("categories")) {
+          //   tempObj.categories = mongodbDocuments[i].categories;
+          // } else {
+          //   tempObj.categories = null;
+          // }
+
+          // if (inputObj.hasOwnProperty("images")) {
+          //   tempObj.images = mongodbDocuments[i].images;
+          // } else {
+          //   tempObj.images = null;
+          // }
+
+          // if (inputObj.hasOwnProperty("description")) {
+          //   tempObj.description = mongodbDocuments[i].description;
+          // } else {
+          //   tempObj.description = null;
+          // }
+
+          // if (inputObj.hasOwnProperty("variants")) {
+          //   tempObj.variants = mongodbDocuments[i].variants;
+          // } else {
+          //   tempObj.variants = null;
+          // }
+
+          // if (inputObj.hasOwnProperty("attributes")) {
+          //   tempObj.attributes = mongodbDocuments[i].attributes;
+          // } else {
+          //   tempObj.attributes = null;
+          // }
+
+          // if (inputObj.hasOwnProperty("specifications")) {
+          //   tempObj.specifications = mongodbDocuments[i].specifications;
+          // } else {
+          //   tempObj.specifications = null;
+          // }
+
           if (inputObj.hasOwnProperty("asin")) {
-            tempObj.asin = mongodbDocuments[i].asin;
+            tempObj.asin = inputObj.asin
           } else {
             tempObj.asin = null;
           }
 
           if (inputObj.hasOwnProperty("title")) {
-            tempObj.title = mongodbDocuments[i].title;
+            tempObj.title = inputObj.title;
           } else {
             tempObj.title = null;
           }
 
           if (inputObj.hasOwnProperty("keywords")) {
-            tempObj.keywords = mongodbDocuments[i].keywords;
+            tempObj.keywords = inputObj.keywords;
           } else {
             tempObj.keywords = null;
           }
 
           if (inputObj.hasOwnProperty("link")) {
-            tempObj.link = mongodbDocuments[i].link;
+            tempObj.link = inputObj.link;
           } else {
             tempObj.link = null;
           }
 
           if (inputObj.hasOwnProperty("feature_bullets")) {
-            tempObj.feature_bullets = mongodbDocuments[i].feature_bullets;
+            tempObj.feature_bullets = inputObj.feature_bullets;
           } else {
             tempObj.feature_bullets = null;
           }
 
           if (inputObj.hasOwnProperty("categories")) {
-            tempObj.categories = mongodbDocuments[i].categories;
+            tempObj.categories = inputObj.categories;
           } else {
             tempObj.categories = null;
           }
 
           if (inputObj.hasOwnProperty("images")) {
-            tempObj.images = mongodbDocuments[i].images;
+            tempObj.images = inputObj.images;
           } else {
             tempObj.images = null;
           }
 
           if (inputObj.hasOwnProperty("description")) {
-            tempObj.description = mongodbDocuments[i].description;
+            tempObj.description = inputObj.description;
           } else {
             tempObj.description = null;
           }
 
           if (inputObj.hasOwnProperty("variants")) {
-            tempObj.variants = mongodbDocuments[i].variants;
+            tempObj.variants = inputObj.variants;
           } else {
             tempObj.variants = null;
           }
 
           if (inputObj.hasOwnProperty("attributes")) {
-            tempObj.attributes = mongodbDocuments[i].attributes;
+            tempObj.attributes = inputObj.attributes;
           } else {
             tempObj.attributes = null;
           }
 
           if (inputObj.hasOwnProperty("specifications")) {
-            tempObj.specifications = mongodbDocuments[i].specifications;
+            tempObj.specifications = inputObj.specifications;
           } else {
             tempObj.specifications = null;
           }
 
-          outputObj.push(tempObj);
+          let dataToSave = {};
+          dataToSave.clientId = inputObj.clientId
+          dataToSave.productId = mongodbDocuments[i]._id
+          dataToSave.mappedField = tempObj
+          
+          console.log(dataToSave)
+          outputObj.push(dataToSave);
         }
 
-        res.status(200).json({
-          message: "Products Mapped Successfully !!!",
-          mapped_products: outputObj,
-        });
+        mappedProductModel.insertMany(outputObj, (err, data) => {
+          if (err) {
+            console.log(err)
+            res.sendStatus(500)
+          }
+          else {
+            res.status(200).json({
+              message: "Products Mapped Successfully !!!",
+              mapped_products: outputObj,
+            });
+          }
+        })
+
       }
     }
   );
