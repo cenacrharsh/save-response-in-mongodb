@@ -231,21 +231,20 @@ app.post("/product/map", (req, res) => {
       if (err) {
         console.log(err);
       } else {
-        console.log(mongodbDocuments.length);
+        // console.log(mongodbDocuments.length);
 
         let outputObj = [];
-
-        let mappedAttributes = [];
         for (let i = 0; i < mongodbDocuments.length; i++) {
           let currMongodbDocument = mongodbDocuments[i];
 
-          for (let i = 0; i < familyAttributes.length; i++) {
+          let mappedAttributes = [];
+          for (let j = 0; j < familyAttributes.length; j++) {
             let tempObj = {};
 
-            let currentAttributeId = familyAttributes[i].attribute_id;
+            let currentAttributeId = familyAttributes[j].attribute_id;
 
             tempObj.attribute_id = currentAttributeId;
-            tempObj.attribute_name = familyAttributes[i].attribute_name;
+            tempObj.attribute_name = familyAttributes[j].attribute_name;
 
             if (inputObj.hasOwnProperty([currentAttributeId])) {
               let currAttributeMappedValue = inputObj[currentAttributeId];
@@ -257,9 +256,9 @@ app.post("/product/map", (req, res) => {
             }
 
             // console.log("tempObj: ", tempObj);
-
             mappedAttributes.push(tempObj);
           }
+          console.log("mappedAttributes length: ", mappedAttributes.length);
 
           let dataToSave = {};
           dataToSave.asin = currMongodbDocument.asin;
