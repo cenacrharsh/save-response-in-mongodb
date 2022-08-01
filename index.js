@@ -132,14 +132,36 @@ app.get("/delete/generic-product", (req, res) => {
   });
 });
 
-// let arrayOfProductAsins = [
-//   { asin: "B07N2F3JXP" },
-//   { asin: "B07K8MGPWJ" },
-//   { asin: "B073JYC4XM" },
-//   { asin: "B09MVZH5RB" },
-//   { asin: "B01K1HPA60" },
-//   { asin: "B08XZBFX6B" },
-// ];
+//# Mapping Products
+
+/*
+! Full Input Object
+
+  {
+    "client_id": "harsh@rubick.ai",
+    "scrape_id": "#abcd",
+    "#111": "title",
+    "#222": "keywords",
+    "#333": "link",
+    "#444": "categories",
+    "#555": "images",
+    "#666": "description",
+    "#777": "variants",
+    "#888": "attributes",
+    "#999": "specifications"
+  }
+
+! Half Input Object
+
+  {
+    "client_id": "harsh@rubick.ai",
+    "scrape_id": "#abcd",
+    "#111": "title",
+    "#222": "keywords",
+    "#333": "link",
+    "#444": "categories"
+  }
+*/
 
 let arrayOfProductAsins = [
   "B09NSW34G8",
@@ -148,6 +170,54 @@ let arrayOfProductAsins = [
   "B096VDR283",
   "B09V7G2V62",
   "B09DT4N454",
+];
+
+let familyAttributes = [
+  {
+    attribute_id: "#111",
+    attribute_name: "product_title",
+    mandatory: true,
+  },
+  {
+    attribute_id: "#222",
+    attribute_name: "product_keywords",
+    mandatory: true,
+  },
+  {
+    attribute_id: "#333",
+    attribute_name: "product_link",
+    mandatory: true,
+  },
+  {
+    attribute_id: "#444",
+    attribute_name: "product_categories",
+    mandatory: true,
+  },
+  {
+    attribute_id: "#555",
+    attribute_name: "product_images",
+    mandatory: true,
+  },
+  {
+    attribute_id: "#666",
+    attribute_name: "product_description",
+    mandatory: false,
+  },
+  {
+    attribute_id: "#777",
+    attribute_name: "product_variants",
+    mandatory: false,
+  },
+  {
+    attribute_id: "#888",
+    attribute_name: "product_attributes",
+    mandatory: false,
+  },
+  {
+    attribute_id: "#999",
+    attribute_name: "product_specifications",
+    mandatory: true,
+  },
 ];
 
 app.post("/product/map", (req, res) => {
@@ -165,148 +235,38 @@ app.post("/product/map", (req, res) => {
 
         let outputObj = [];
 
+        let mappedAttributes = [];
         for (let i = 0; i < mongodbDocuments.length; i++) {
-          let tempObj = {};
+          let currMongodbDocument = mongodbDocuments[i];
 
-          // if (inputObj.hasOwnProperty("asin")) {
-          //   tempObj.asin = mongodbDocuments[i].asin;
-          // } else {
-          //   tempObj.asin = null;
-          // }
+          for (let i = 0; i < familyAttributes.length; i++) {
+            let tempObj = {};
 
-          // if (inputObj.hasOwnProperty("title")) {
-          //   tempObj.title = mongodbDocuments[i].title;
-          // } else {
-          //   tempObj.title = null;
-          // }
+            let currentAttributeId = familyAttributes[i].attribute_id;
 
-          // if (inputObj.hasOwnProperty("keywords")) {
-          //   tempObj.keywords = mongodbDocuments[i].keywords;
-          // } else {
-          //   tempObj.keywords = null;
-          // }
+            tempObj.attribute_id = currentAttributeId;
+            tempObj.attribute_name = familyAttributes[i].attribute_name;
 
-          // if (inputObj.hasOwnProperty("link")) {
-          //   tempObj.link = mongodbDocuments[i].link;
-          // } else {
-          //   tempObj.link = null;
-          // }
+            if (inputObj.hasOwnProperty([currentAttributeId])) {
+              let currAttributeMappedValue = inputObj[currentAttributeId];
 
-          // if (inputObj.hasOwnProperty("feature_bullets")) {
-          //   tempObj.feature_bullets = mongodbDocuments[i].feature_bullets;
-          // } else {
-          //   tempObj.feature_bullets = null;
-          // }
+              tempObj.attribute_value =
+                currMongodbDocument[currAttributeMappedValue];
+            } else {
+              tempObj.attribute_value = null;
+            }
 
-          // if (inputObj.hasOwnProperty("categories")) {
-          //   tempObj.categories = mongodbDocuments[i].categories;
-          // } else {
-          //   tempObj.categories = null;
-          // }
+            // console.log("tempObj: ", tempObj);
 
-          // if (inputObj.hasOwnProperty("images")) {
-          //   tempObj.images = mongodbDocuments[i].images;
-          // } else {
-          //   tempObj.images = null;
-          // }
-
-          // if (inputObj.hasOwnProperty("description")) {
-          //   tempObj.description = mongodbDocuments[i].description;
-          // } else {
-          //   tempObj.description = null;
-          // }
-
-          // if (inputObj.hasOwnProperty("variants")) {
-          //   tempObj.variants = mongodbDocuments[i].variants;
-          // } else {
-          //   tempObj.variants = null;
-          // }
-
-          // if (inputObj.hasOwnProperty("attributes")) {
-          //   tempObj.attributes = mongodbDocuments[i].attributes;
-          // } else {
-          //   tempObj.attributes = null;
-          // }
-
-          // if (inputObj.hasOwnProperty("specifications")) {
-          //   tempObj.specifications = mongodbDocuments[i].specifications;
-          // } else {
-          //   tempObj.specifications = null;
-          // }
-
-          if (inputObj.hasOwnProperty("asin")) {
-            tempObj.asin = inputObj.asin;
-          } else {
-            tempObj.asin = null;
-          }
-
-          if (inputObj.hasOwnProperty("title")) {
-            tempObj.title = inputObj.title;
-          } else {
-            tempObj.title = null;
-          }
-
-          if (inputObj.hasOwnProperty("keywords")) {
-            tempObj.keywords = inputObj.keywords;
-          } else {
-            tempObj.keywords = null;
-          }
-
-          if (inputObj.hasOwnProperty("link")) {
-            tempObj.link = inputObj.link;
-          } else {
-            tempObj.link = null;
-          }
-
-          if (inputObj.hasOwnProperty("feature_bullets")) {
-            tempObj.feature_bullets = inputObj.feature_bullets;
-          } else {
-            tempObj.feature_bullets = null;
-          }
-
-          if (inputObj.hasOwnProperty("categories")) {
-            tempObj.categories = inputObj.categories;
-          } else {
-            tempObj.categories = null;
-          }
-
-          if (inputObj.hasOwnProperty("images")) {
-            tempObj.images = inputObj.images;
-          } else {
-            tempObj.images = null;
-          }
-
-          if (inputObj.hasOwnProperty("description")) {
-            tempObj.description = inputObj.description;
-          } else {
-            tempObj.description = null;
-          }
-
-          if (inputObj.hasOwnProperty("variants")) {
-            tempObj.variants = inputObj.variants;
-          } else {
-            tempObj.variants = null;
-          }
-
-          if (inputObj.hasOwnProperty("attributes")) {
-            tempObj.attributes = inputObj.attributes;
-          } else {
-            tempObj.attributes = null;
-          }
-
-          if (inputObj.hasOwnProperty("specifications")) {
-            tempObj.specifications = inputObj.specifications;
-          } else {
-            tempObj.specifications = null;
+            mappedAttributes.push(tempObj);
           }
 
           let dataToSave = {};
-          dataToSave.clientId = inputObj.clientId;
-          dataToSave.scrapeId = inputObj.scrapeId;
-          dataToSave.productId = mongodbDocuments[i]._id;
-          dataToSave.mappedField = tempObj;
+          dataToSave.asin = currMongodbDocument.asin;
+          dataToSave.client_id = inputObj.client_id;
+          dataToSave.scrape_id = inputObj.scrape_id;
+          dataToSave.mapped_attributes = mappedAttributes;
 
-          console.log(dataToSave);
           outputObj.push(dataToSave);
         }
 

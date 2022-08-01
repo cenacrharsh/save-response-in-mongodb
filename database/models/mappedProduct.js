@@ -2,20 +2,20 @@ const mongoose = require("mongoose");
 
 const mappedProductSchema = new mongoose.Schema(
   {
-    clientId: {
+    asin: {
       type: String,
       required: true,
     },
-    productId: {
+    client_id: {
       type: String,
       required: true,
     },
-    scrapeId: {
+    scrape_id: {
       type: String,
       required: true,
     },
-    mappedField: {
-      type: Object,
+    mapped_attributes: {
+      type: [Object],
       required: true,
     },
   },
