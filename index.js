@@ -11,7 +11,7 @@ const db = require("./database/index");
 const responseModel = require("./database/models/response");
 const productModel = require("./database/models/product");
 const genericProductModel = require("./database/models/genericProduct");
-const mappedProductModel = require("./database/models/mappedProduct")
+const mappedProductModel = require("./database/models/mappedProduct");
 
 db.init();
 
@@ -235,7 +235,7 @@ app.post("/product/map", (req, res) => {
           // }
 
           if (inputObj.hasOwnProperty("asin")) {
-            tempObj.asin = inputObj.asin
+            tempObj.asin = inputObj.asin;
           } else {
             tempObj.asin = null;
           }
@@ -301,27 +301,26 @@ app.post("/product/map", (req, res) => {
           }
 
           let dataToSave = {};
-          dataToSave.clientId = inputObj.clientId
-          dataToSave.productId = mongodbDocuments[i]._id
-          dataToSave.mappedField = tempObj
-          
-          console.log(dataToSave)
+          dataToSave.clientId = inputObj.clientId;
+          dataToSave.scrapeId = inputObj.scrapeId;
+          dataToSave.productId = mongodbDocuments[i]._id;
+          dataToSave.mappedField = tempObj;
+
+          console.log(dataToSave);
           outputObj.push(dataToSave);
         }
 
         mappedProductModel.insertMany(outputObj, (err, data) => {
           if (err) {
-            console.log(err)
-            res.sendStatus(500)
-          }
-          else {
+            console.log(err);
+            res.sendStatus(500);
+          } else {
             res.status(200).json({
               message: "Products Mapped Successfully !!!",
               mapped_products: outputObj,
             });
           }
-        })
-
+        });
       }
     }
   );
