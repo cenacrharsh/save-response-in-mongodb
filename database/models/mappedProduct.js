@@ -27,3 +27,5 @@ const mappedProductSchema = new mongoose.Schema(
 const mappedProductModel = mongoose.model("mappedProduct", mappedProductSchema);
 
 module.exports = mappedProductModel;
+
+
